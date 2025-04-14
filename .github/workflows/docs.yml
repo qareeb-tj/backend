@@ -37,7 +37,7 @@ jobs:
       - name: Build documentation
         run: |
           cd docs
-          mkdocs build --site-dir ../site
+          python -m mkdocs build --site-dir ../site
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
