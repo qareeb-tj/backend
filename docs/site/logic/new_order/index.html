@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="../../img/favicon.ico" rel="shortcut icon"/>
+<title>Заказ такси - qareeb</title>
+<link href="../../css/theme.css" rel="stylesheet"/>
+<link href="../../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<link href="../../assets/mkdocs_puml/puml.css" rel="stylesheet"/>
+<link href="../../assets/mkdocs_puml/interaction.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "\u0417\u0430\u043a\u0430\u0437 \u0442\u0430\u043a\u0441\u0438";
+        var mkdocs_page_input_path = "logic/new_order.md";
+        var mkdocs_page_url = null;
+      </script>
+<!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<link href="../../pdf/document.pdf" rel="alternate" title="PDF" type="application/pdf"/></head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../.."> qareeb
+        </a>
+</div>
+<div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../..">Главная</a>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Бизнес-процессы</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="#">Заказ такси</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#_2">Глоссарий</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_3">Описание</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_4">Диаграма последовательности</a>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#_5">Компоненты</a>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Модель данных</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/schema/">Схема БД</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/user/">Пользователь</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/integrator/">Интегратор</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/order/">Заказ</a>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/transport/">Транспорт</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="Mobile navigation menu" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../..">qareeb</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Docs" class="icon icon-home" href="../.."></a></li>
+<li class="breadcrumb-item">Бизнес-процессы</li>
+<li class="breadcrumb-item active">Заказ такси</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div class="section" itemprop="articleBody">
+<h1 id="_1">Заказ такси</h1>
+<h2 id="_2">Глоссарий</h2>
+<ul>
+<li><code>Интегратор</code> – службы такси, с системами которых у <code>qareeb</code> имеется интеграция</li>
+<li><code>Long polling</code> - периодический опрос статуса заказа на стороне Интегратора, инциируемый нашей системой</li>
+<li><code>Webhook</code> - альтернатива Long polling, когда Интегратор сам оповещает нас об изменении статуса (например: машина назначена, поездка завершена)</li>
+<li><code>Обработчик</code> - Интегратор, который первым назначил машину</li>
+</ul>
+<h2 id="_3">Описание</h2>
+<p>Процесс заказа такси состоит из следующих шагов:</p>
+<ol>
+<li><strong>выбор</strong> пользователем <strong>точки подачи</strong> машины</li>
+<li><strong>передача заказа</strong> в службы-интеграторы</li>
+<li><strong>отмена заказа</strong> в службах-интеграторах, которые не успели подобрать машину первыми</li>
+</ol>
+<p>Таким образом, заказ забирает себе Интегратор-Обработчик, который первым подобрал машину.</p>
+<h2 id="_4">Диаграма последовательности</h2>
+<div class="puml-container"><div class="puml light" style="display: block"><svg class="diagram" contentstyletype="text/css" data-diagram-type="SEQUENCE" height="700px" preserveaspectratio="xMidYMid meet" style="width:908px;height:700px;background:#FFFFFF;" version="1.1" viewbox="0 0 908 700" width="908px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" zoomandpan="magnify"><title>Подбор машины и передача заказа интегратору</title><defs></defs><g><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthadjust="spacing" textlength="397.5029" x="256.7717" y="27.9951">Подбор машины и передача заказа интегратору</text><g><title>qareeb</title><rect fill="#FFFFFF" height="429.9297" style="stroke:#181818;stroke-width:1;" width="10" x="390.8008" y="164.8594"></rect></g><rect fill="none" height="422.9297" style="stroke:#000000;stroke-width:1.5;" width="893.0464" x="9" y="179.8594"></rect><rect fill="none" height="165.6016" style="stroke:#000000;stroke-width:1.5;" width="547.9131" x="344.1333" y="291.3906"></rect><rect fill="none" height="75.3984" style="stroke:#000000;stroke-width:1.5;" width="527.9131" x="354.1333" y="374.5938"></rect><g><title>Пользователь</title><rect fill="#000000" fill-opacity="0.00000" height="501.1953" width="8" x="186.5498" y="118.5938"></rect><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="190" x2="190" y1="118.5938" y2="619.7891"></line></g><g><title>qareeb</title><rect fill="#000000" fill-opacity="0.00000" height="501.1953" width="8" x="391.8008" y="118.5938"></rect><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="395.1333" x2="395.1333" y1="118.5938" y2="619.7891"></line></g><g><title>Интегратор 1</title><rect fill="#000000" fill-opacity="0.00000" height="501.1953" width="8" x="562.5947" y="118.5938"></rect><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="566.5044" x2="566.5044" y1="118.5938" y2="619.7891"></line></g><g><title>Интегратор 2</title><rect fill="#000000" fill-opacity="0.00000" height="501.1953" width="8" x="686.7754" y="118.5938"></rect><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="690.6851" x2="690.6851" y1="118.5938" y2="619.7891"></line></g><g><title>Интегратор 3</title><rect fill="#000000" fill-opacity="0.00000" height="501.1953" width="8" x="810.9561" y="118.5938"></rect><line style="stroke:#181818;stroke-width:0.5;stroke-dasharray:5.0,5.0;" x1="814.8657" x2="814.8657" y1="118.5938" y2="619.7891"></line></g><g class="participant participant-head" data-participant="u"><text fill="#000000" font-family="sans-serif" font-size="14" lengthadjust="spacing" textlength="103.0996" x="136" y="115.292">Пользователь</text><ellipse cx="190.5498" cy="50.7969" fill="#E2E2F0" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"></ellipse><path d="M190.5498,58.7969 L190.5498,85.7969 M177.5498,66.7969 L203.5498,66.7969 M190.5498,85.7969 L177.5498,100.7969 M190.5498,85.7969 L203.5498,100.7969" fill="none" style="stroke:#181818;stroke-width:0.5;"></path></g><g class="participant participant-tail" data-participant="u"><text fill="#000000" font-family="sans-serif" font-size="14" lengthadjust="spacing" textlength="103.0996" x="136" y="631.7842">Пользователь</text><ellipse cx="190.5498" cy="643.5859" fill="#E2E2F0" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"></ellipse><path d="M190.5498,651.5859 L190.5498,678.5859 M177.5498,659.5859 L203.5498,659.5859 M190.5498,678.5859 L177.5498,693.5859 M190.5498,678.5859 L203.5498,693.5859" fill="none" style="stroke:#181818;stroke-width:0.5;"></path></g><g class="participant participant-head" data-participant="q"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="63.335" x="364.1333" y="87.2969"></rect><text fill="#000000" font-family="sans-serif" font-size="14" lengthadjust="spacing" textlength="49.335" x="371.1333" y="107.292">qareeb</text></g><g class="participant participant-tail" data-participant="q"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="63.335" x="364.1333" y="618.7891"></rect><text fill="#000000" font-family="sans-serif" font-size="14" lengthadjust="spacing" textlength="49.335" x="371.1333" y="638.7842">qareeb</text></g><g class="participant participant-head" data-participant="t1"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="114.1807" x="509.5044" y="87.2969"></rect><text fill="#000000" font-family="sans-serif" font-size="14" lengthadjust="spacing" textlength="100.1807" x="516.5044" y="107.292">Интегратор 1</text></g><g class="participant participant-tail" data-participant="t1"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="114.1807" x="509.5044" y="618.7891"></rect><text fill="#000000" font-family="sans-serif" font-size="14" lengthadjust="spacing" textlength="100.1807" x="516.5044" y="638.7842">Интегратор 1</text></g><g class="participant participant-head" data-participant="t2"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="114.1807" x="633.6851" y="87.2969"></rect><text fill="#000000" font-family="sans-serif" font-size="14" lengthadjust="spacing" textlength="100.1807" x="640.6851" y="107.292">Интегратор 2</text></g><g class="participant participant-tail" data-participant="t2"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="114.1807" x="633.6851" y="618.7891"></rect><text fill="#000000" font-family="sans-serif" font-size="14" lengthadjust="spacing" textlength="100.1807" x="640.6851" y="638.7842">Интегратор 2</text></g><g class="participant participant-head" data-participant="t3"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="114.1807" x="757.8657" y="87.2969"></rect><text fill="#000000" font-family="sans-serif" font-size="14" lengthadjust="spacing" textlength="100.1807" x="764.8657" y="107.292">Интегратор 3</text></g><g class="participant participant-tail" data-participant="t3"><rect fill="#E2E2F0" height="30.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="114.1807" x="757.8657" y="618.7891"></rect><text fill="#000000" font-family="sans-serif" font-size="14" lengthadjust="spacing" textlength="100.1807" x="764.8657" y="638.7842">Интегратор 3</text></g><g><title>qareeb</title><rect fill="#FFFFFF" height="429.9297" style="stroke:#181818;stroke-width:1;" width="10" x="390.8008" y="164.8594"></rect></g><g class="message" data-participant-1="u" data-participant-2="q"><polygon fill="#181818" points="378.8008,160.8594,388.8008,164.8594,378.8008,168.8594,382.8008,164.8594" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="190.5498" x2="384.8008" y1="164.8594" y2="164.8594"></line><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="72.1157" x="197.5498" y="144.6606">Указывает</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="269.6655" y="144.6606"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="38.7524" x="273.7979" y="144.6606">точку</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="312.5503" y="144.6606"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="49.5371" x="316.6826" y="144.6606">подачи</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="366.2197" y="144.6606"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="8.4487" x="370.3521" y="144.6606">и</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="69.9702" x="197.5498" y="159.7935">нажимает</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="267.52" y="159.7935"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="75.3149" x="271.6523" y="159.7935">"Поехали!"</text></g><path d="M9,179.8594 L325.0259,179.8594 L325.0259,186.9922 L315.0259,196.9922 L9,196.9922 L9,179.8594" fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"></path><rect fill="none" height="422.9297" style="stroke:#000000;stroke-width:1.5;" width="893.0464" x="9" y="179.8594"></rect><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthadjust="spacing" textlength="271.0259" x="24" y="192.9263">Передача заказа и подбор машины</text><g class="message" data-participant-1="q" data-participant-2="t1"><polygon fill="#181818" points="554.5947,214.125,564.5947,218.125,554.5947,222.125,558.5947,218.125" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="400.8008" x2="560.5947" y1="218.125" y2="218.125"></line><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="66.5488" x="407.8008" y="213.0591">Передает</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="474.3496" y="213.0591"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="37.6099" x="478.4819" y="213.0591">заказ</text></g><g class="message" data-participant-1="q" data-participant-2="t2"><polygon fill="#181818" points="678.7754,243.2578,688.7754,247.2578,678.7754,251.2578,682.7754,247.2578" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="400.8008" x2="684.7754" y1="247.2578" y2="247.2578"></line><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="66.5488" x="407.8008" y="242.1919">Передает</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="474.3496" y="242.1919"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="37.6099" x="478.4819" y="242.1919">заказ</text></g><g class="message" data-participant-1="q" data-participant-2="t3"><polygon fill="#181818" points="802.9561,272.3906,812.9561,276.3906,802.9561,280.3906,806.9561,276.3906" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="400.8008" x2="808.9561" y1="276.3906" y2="276.3906"></line><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="66.5488" x="407.8008" y="271.3247">Передает</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="474.3496" y="271.3247"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="37.6099" x="478.4819" y="271.3247">заказ</text></g><path d="M344.1333,291.3906 L408.5762,291.3906 L408.5762,298.5234 L398.5762,308.5234 L344.1333,308.5234 L344.1333,291.3906" fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"></path><rect fill="none" height="165.6016" style="stroke:#000000;stroke-width:1.5;" width="547.9131" x="344.1333" y="291.3906"></rect><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthadjust="spacing" textlength="19.4429" x="359.1333" y="304.4575">alt</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthadjust="spacing" textlength="242.0967" x="423.5762" y="303.6011">[Интегратор поддерживает webhook]</text><g class="message" data-participant-1="t2" data-participant-2="q"><polygon fill="#008000" points="411.8008,340.7891,401.8008,344.7891,411.8008,348.7891,407.8008,344.7891" style="stroke:#008000;stroke-width:1;"></polygon><line style="stroke:#008000;stroke-width:1;stroke-dasharray:2.0,2.0;" x1="405.8008" x2="689.7754" y1="344.7891" y2="344.7891"></line><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="59.0332" x="417.8008" y="324.5903">Приедет</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="476.834" y="324.5903"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="51.1431" x="480.9663" y="324.5903">черный</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="532.1094" y="324.5903"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="36.1055" x="536.2417" y="324.5903">Volvo</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="572.3472" y="324.5903"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="18.3574" x="576.4795" y="324.5903">г/с</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="33.084" x="417.8008" y="339.7231">2255</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="450.8848" y="339.7231"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="16.542" x="455.0171" y="339.7231">01</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="471.5591" y="339.7231"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="11.7749" x="475.6914" y="339.7231">TJ</text></g><line style="stroke:#000000;stroke-width:1;stroke-dasharray:2.0,2.0;" x1="344.1333" x2="892.0464" y1="353.7891" y2="353.7891"></line><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthadjust="spacing" textlength="262.6465" x="349.1333" y="363.9995">[Интегратор НЕ поддерживает webhook]</text><path d="M354.1333,374.5938 L430.7573,374.5938 L430.7573,381.7266 L420.7573,391.7266 L354.1333,391.7266 L354.1333,374.5938" fill="#EEEEEE" style="stroke:#000000;stroke-width:1.5;"></path><rect fill="none" height="75.3984" style="stroke:#000000;stroke-width:1.5;" width="527.9131" x="354.1333" y="374.5938"></rect><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthadjust="spacing" textlength="31.624" x="369.1333" y="387.6606">loop</text><text fill="#000000" font-family="sans-serif" font-size="11" font-weight="bold" lengthadjust="spacing" textlength="249.7881" x="445.7573" y="386.8042">[Периодический опрос статуса заказа]</text><g class="message" data-participant-1="q" data-participant-2="t1"><polygon fill="#181818" points="554.5947,408.8594,564.5947,412.8594,554.5947,416.8594,558.5947,412.8594" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="400.8008" x2="560.5947" y1="412.8594" y2="412.8594"></line><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="92.5615" x="407.8008" y="407.7935">Запрашивает</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="500.3623" y="407.7935"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="45.1001" x="504.4946" y="407.7935">статус</text></g><g class="message" data-participant-1="q" data-participant-2="t3"><polygon fill="#181818" points="802.9561,437.9922,812.9561,441.9922,802.9561,445.9922,806.9561,441.9922" style="stroke:#181818;stroke-width:1;"></polygon><line style="stroke:#181818;stroke-width:1;" x1="400.8008" x2="808.9561" y1="441.9922" y2="441.9922"></line><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="92.5615" x="407.8008" y="436.9263">Запрашивает</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="500.3623" y="436.9263"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="45.1001" x="504.4946" y="436.9263">статус</text></g><g class="message" data-participant-1="q" data-participant-2="t1"><polygon fill="#FF0000" points="554.5947,499.2578,564.5947,503.2578,554.5947,507.2578,558.5947,503.2578" style="stroke:#FF0000;stroke-width:1;"></polygon><line style="stroke:#FF0000;stroke-width:1;" x1="400.8008" x2="560.5947" y1="503.2578" y2="503.2578"></line><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="52.0762" x="407.8008" y="498.1919">Отмена</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="459.877" y="498.1919"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="45.5762" x="464.0093" y="498.1919">заказа</text></g><path d="M19,468.9922 L19,523.9922 L385,523.9922 L385,478.9922 L375,468.9922 L19,468.9922" fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"></path><path d="M375,468.9922 L375,478.9922 L385,478.9922 L375,468.9922" fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"></path><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="200.1099" x="25" y="486.0591">Необходимо отменить заказ,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="345.5029" x="25" y="501.1919">чтобы таксисты не связывались с пользователем,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="231.4102" x="25" y="516.3247">которому уже назначена машина</text><g class="message" data-participant-1="q" data-participant-2="t3"><polygon fill="#FF0000" points="802.9561,546.5234,812.9561,550.5234,802.9561,554.5234,806.9561,550.5234" style="stroke:#FF0000;stroke-width:1;"></polygon><line style="stroke:#FF0000;stroke-width:1;" x1="400.8008" x2="808.9561" y1="550.5234" y2="550.5234"></line><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="52.0762" x="407.8008" y="545.4575">Отмена</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="459.877" y="545.4575"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="45.5762" x="464.0093" y="545.4575">заказа</text></g><g class="message" data-participant-1="q" data-participant-2="u"><polygon fill="#008000" points="201.5498,590.7891,191.5498,594.7891,201.5498,598.7891,197.5498,594.7891" style="stroke:#008000;stroke-width:1;"></polygon><line style="stroke:#008000;stroke-width:1;stroke-dasharray:2.0,2.0;" x1="195.5498" x2="394.8008" y1="594.7891" y2="594.7891"></line><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="9.2295" x="207.5498" y="574.5903">К</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="216.7793" y="574.5903"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="25.4351" x="220.9116" y="574.5903">вам</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="246.3467" y="574.5903"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="67.1836" x="250.479" y="574.5903">подъедет</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="317.6626" y="574.5903"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="51.1431" x="321.7949" y="574.5903">черный</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="36.1055" x="207.5498" y="589.7231">Volvo</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="243.6553" y="589.7231"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="18.3574" x="247.7876" y="589.7231">г/с</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="266.145" y="589.7231"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="33.084" x="270.2773" y="589.7231">2255</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="303.3613" y="589.7231"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="16.542" x="307.4937" y="589.7231">01</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="4.1323" x="324.0356" y="589.7231"> </text><text fill="#000000" font-family="sans-serif" font-size="13" lengthadjust="spacing" textlength="11.7749" x="328.168" y="589.7231">TJ</text></g></g></svg></div></div>
+<h2 id="_5">Компоненты</h2>
+<p>Взаимодействие с любым Интегратором может быть сведено к следующему унифицированному интерфейсу:</p>
+<pre><code class="language-go">
+type TaxiServiceI interface {
+    // CreateOrder creates order within the integrator system
+    CreateOrder(in CreateOrderIn) (CreateOrderOut, error)
+
+    // GetOrder gets order and it's current state
+    GetOrder(orderId string) (Order, error)
+
+    // CancelOrder cancels order if possible
+    CancelOrder(orderId string) error
+}
+
+type CreateOrderIn struct {
+    // Longitude and latitude of the pickup point
+    PickupLat float
+    PickupLong float
+
+    // Customer's phone number for the driver to call if necessary
+    CustomerPhoneNumber string
+}
+
+// Any geographical point that can be described by longitude and latitude
+type Point struct {
+    Long float
+    Lat float
+}
+
+</code></pre>
+</div>
+</div><footer>
+<div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href="../.." title="Главная"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+<a class="btn btn-neutral float-right" href="../../api/schema/" title="Схема БД">Next <span class="icon icon-circle-arrow-right"></span></a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+</div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span><a href="../.." style="color: #fcfcfc">« Previous</a></span>
+<span><a href="../../api/schema/" style="color: #fcfcfc">Next »</a></span>
+</span>
+</div>
+<script src="../../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "../..";</script>
+<script src="../../js/theme_extra.js"></script>
+<script src="../../js/theme.js"></script>
+<script src="../../assets/mkdocs_puml/puml.js"></script>
+<script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+<script src="../../assets/mkdocs_puml/interaction.js"></script>
+<script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+</body>
+</html>

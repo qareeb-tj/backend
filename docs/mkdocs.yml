@@ -1,0 +1,23 @@
+site_name: qareeb
+site_description: Агрегатор такси для города Душанбе
+theme: readthedocs
+
+nav:
+  - Главная: index.md
+  - Бизнес-процессы:
+      - Заказ такси: logic/new_order.md
+      - Завершение поездки: logic/end_trip.md
+  - Модель данных:
+      - Схема БД: api/schema.md
+      - Пользователь: api/user.md
+      - Интегратор: api/integrator.md
+      - Заказ: api/order.md
+      - Транспорт: api/transport.md
+
+plugins:
+  - plantuml:
+      puml_url: https://www.plantuml.com/plantuml/
+      puml_keyword: plantuml
+      theme:
+        enabled: false
+  - with-pdf
